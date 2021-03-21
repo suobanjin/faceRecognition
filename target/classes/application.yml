@@ -23,5 +23,5 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
 
-featureRequestUrl: http://175.24.98.81:5000/face/feature   #人脸识别算法请求url地址
-tempImagePrefix: C:\image\temp\      #临时图片存放地址前缀
+featureRequestUrl: http://175.24.98.81:5000/face/feature
+tempImagePrefix: C:\image\temp\
