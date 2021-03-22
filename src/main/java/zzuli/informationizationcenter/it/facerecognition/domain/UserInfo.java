@@ -19,7 +19,7 @@ public class UserInfo {
     @ApiModelProperty(value = "用户名",required = true)
     private String username;
     @ApiModelProperty(value = "性别")
-    private String gender;
+    private int gender;
     @ApiModelProperty(value = "学院")
     private String college;
     @ApiModelProperty(value = "年级")
@@ -28,18 +28,29 @@ public class UserInfo {
     private Date date;
     @ApiModelProperty(value = "人脸特征值")
     private String feature;
+    @ApiModelProperty(value = "人脸图片url地址")
+    private String imageUrl;
 
     @Override
     public String toString() {
         return "UserInfo{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
                 ", college='" + college + '\'' +
                 ", grade='" + grade + '\'' +
                 ", date=" + date +
                 ", feature='" + feature + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -58,13 +69,12 @@ public class UserInfo {
         this.username = username;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
     public void setGender(int gender) {
-        if (gender == 0)this.gender = "女";
-        else if (gender == 1)this.gender = "男";
+        this.gender = gender;
     }
 
     public String getCollege() {

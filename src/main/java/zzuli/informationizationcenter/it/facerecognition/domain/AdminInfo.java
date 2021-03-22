@@ -1,5 +1,8 @@
 package zzuli.informationizationcenter.it.facerecognition.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @ClassName AdminInfo
  * @Description TODO
@@ -7,9 +10,13 @@ package zzuli.informationizationcenter.it.facerecognition.domain;
  * @Date 2021/3/21 21:07
  * @Version 1.0
  */
+@ApiModel(value = "管理员操作")
 public class AdminInfo {
+    @ApiModelProperty(value = "id主键",example = "1")
     private int id;
+    @ApiModelProperty(value = "用户名")
     private String username;
+    @ApiModelProperty(value = "密码")
     private String password;
 
     @Override

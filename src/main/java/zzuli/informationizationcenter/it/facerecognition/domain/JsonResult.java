@@ -1,11 +1,19 @@
 package zzuli.informationizationcenter.it.facerecognition.domain;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
+@ApiModel(value = "统一json返回值")
 public class JsonResult<T> implements Serializable {
+    @ApiModelProperty(value = "提示信息")
     private String msg;
+    @ApiModelProperty(value = "相应码",example = "200")
     private int code;
+    @ApiModelProperty(value = "数据集合")
     private List<T> data;
+    @ApiModelProperty(value = "数据数量")
     private int count;
 
     public String getMsg() {

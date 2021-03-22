@@ -143,5 +143,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.3.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.13" level="project" />
   </component>
 </module>
