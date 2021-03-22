@@ -15,7 +15,7 @@ import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
 @Mapper
 @Repository
 public interface UserInfoMapper {
-    @Insert("insert into user(username,gender,college,grade,date,feature) values(" +
-            "#{username},#{gender},#{date},#{feature})")
+    @Insert("insert into user(username,gender,college,grade,date,feature,image_url) values(" +
+            "#{username},#{gender},#{date},#{feature},#{imageUrl})")
     int insert(UserInfo userInfo);
 }

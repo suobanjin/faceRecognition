@@ -20,6 +20,7 @@ public class UploadUtils {
      * @return map 返回值有多个，key为url表示上传的图片url，key为path表示图片在服务器的真实路径
      */
     public static Map<String,String> upload(MultipartFile file, String path, HttpServletRequest request) {
+        System.out.println(file);
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null) return null;
         int index = originalFilename.indexOf(".");

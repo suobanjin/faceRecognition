@@ -1,8 +1,11 @@
 package zzuli.informationizationcenter.it.facerecognition.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -17,14 +20,18 @@ public class UserInfo {
     @ApiModelProperty(value = "主键",example = "1")
     private int id;
     @ApiModelProperty(value = "用户名",required = true)
+    @NotBlank
     private String username;
     @ApiModelProperty(value = "性别")
     private int gender;
     @ApiModelProperty(value = "学院")
+    @NotBlank
     private String college;
     @ApiModelProperty(value = "年级")
+    @NotBlank
     private String grade;
     @ApiModelProperty(value = "录入时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
     @ApiModelProperty(value = "人脸特征值")
     private String feature;

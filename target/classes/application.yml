@@ -1,9 +1,10 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=UTF-8
+    #url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://175.24.98.81/:3306/face?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: 8778218jia.COM
+    password: 8778218jia
     driver-class-name: com.mysql.jdbc.Driver
     initialSize: 5
     minIdle: 5

@@ -1,18 +1,21 @@
 package zzuli.informationizationcenter.it.facerecognition.controller;
 
-import cn.hutool.http.HttpRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import zzuli.informationizationcenter.it.facerecognition.domain.JsonResult;
 import zzuli.informationizationcenter.it.facerecognition.domain.UploadStatus;
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
+import zzuli.informationizationcenter.it.facerecognition.service.UserInfoService;
 import zzuli.informationizationcenter.it.facerecognition.utils.HttpUtils;
 import zzuli.informationizationcenter.it.facerecognition.utils.UploadUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -26,9 +29,15 @@ import java.util.Map;
 @RequestMapping("/user")
 @Api(value = "用户信息相关操作")
 public class UserInfoController {
-    @Value("${basePath}")
+    @Value("${baseFilePrefix}")
     private String path;
     private HttpUtils httpUtils;
+    private UserInfoService userInfoService;
+    @Autowired
+    public void setUserInfoService(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
+    }
+
     @Autowired
     public void setHttpUtils(HttpUtils httpUtils){
         this.httpUtils = httpUtils;
@@ -46,21 +55,43 @@ public class UserInfoController {
            )
     })
     public JsonResult<String> insertUserInfo(MultipartFile file,
-                                             UserInfo userInfo,
+                                             @Validated UserInfo userInfo,
+                                             BindingResult bindingResult,
                                              HttpServletRequest request){
+        if (userInfo.getDate() == null){
+            userInfo.setDate(new Date());
+        }
+        System.out.println(userInfo);
+        System.out.println(bindingResult);
+        JsonResult<String> jsonResult = new JsonResult<>();
+        if (bindingResult.hasErrors()){
+            jsonResult.setCode(400);
+            jsonResult.setMsg("基本信息填写错误，请检查后重试!");
+            return jsonResult;
+        }
         Map<String, String> imageMap = UploadUtils.upload(file, path, request);
+        if (imageMap == null || imageMap.size() == 0){
+            jsonResult.setCode(500);
+            jsonResult.setMsg("服务器异常，请稍后重试!");
+            return jsonResult;
+        }
         String url = imageMap.get(UploadStatus.URL);
         String path = imageMap.get(UploadStatus.PATH);
         String faceFeature = httpUtils.post(path);
-        JsonResult<String> jsonResult = new JsonResult<>();
         if (faceFeature == null){
-            jsonResult.setCode(400);
+            jsonResult.setCode(401);
             jsonResult.setMsg("未检测到人脸，或者人脸被遮挡!");
             return jsonResult;
         }
         userInfo.setImageUrl(url);
         userInfo.setFeature(faceFeature);
-        jsonResult.setCode(200);
+        boolean isInsert = userInfoService.insert(userInfo);
+        if (isInsert) {
+            jsonResult.setCode(200);
+        }else{
+            jsonResult.setCode(400);
+            jsonResult.setMsg("服务器异常，请稍后重试");
+        }
         return jsonResult;
     }
 
