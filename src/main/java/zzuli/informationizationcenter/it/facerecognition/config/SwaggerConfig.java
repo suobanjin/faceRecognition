@@ -25,7 +25,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.nvn.controller"))
+                .apis(RequestHandlerSelectors.basePackage("zzuli.informationizationcenter.it.facerecognition.controller"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("人脸识别后台接口说明")
