@@ -3,6 +3,8 @@ package zzuli.informationizationcenter.it.facerecognition.domain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 /**
  * @ClassName AdminInfo
  * @Description TODO
@@ -11,7 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @Version 1.0
  */
 @ApiModel(value = "管理员操作")
-public class AdminInfo {
+public class AdminInfo implements Serializable {
     @ApiModelProperty(value = "id主键",example = "1")
     private int id;
     @ApiModelProperty(value = "用户名")

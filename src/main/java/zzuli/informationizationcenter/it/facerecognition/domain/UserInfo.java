@@ -3,9 +3,8 @@ package zzuli.informationizationcenter.it.facerecognition.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Date;
  * @Version 1.0
  */
 @ApiModel(value = "用户信息实体类")
-public class UserInfo {
+public class UserInfo implements Serializable {
     @ApiModelProperty(value = "主键",example = "1")
     private int id;
     @ApiModelProperty(value = "用户名",required = true)
@@ -37,7 +36,6 @@ public class UserInfo {
     private String feature;
     @ApiModelProperty(value = "人脸图片url地址")
     private String imageUrl;
-
     @Override
     public String toString() {
         return "UserInfo{" +

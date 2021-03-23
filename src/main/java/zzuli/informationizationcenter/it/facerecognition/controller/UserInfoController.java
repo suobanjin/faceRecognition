@@ -3,10 +3,13 @@ package zzuli.informationizationcenter.it.facerecognition.controller;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.spring.web.json.Json;
 import zzuli.informationizationcenter.it.facerecognition.domain.JsonResult;
 import zzuli.informationizationcenter.it.facerecognition.domain.UploadStatus;
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
@@ -61,8 +64,6 @@ public class UserInfoController {
         if (userInfo.getDate() == null){
             userInfo.setDate(new Date());
         }
-        System.out.println(userInfo);
-        System.out.println(bindingResult);
         JsonResult<String> jsonResult = new JsonResult<>();
         if (bindingResult.hasErrors()){
             jsonResult.setCode(400);
@@ -116,10 +117,14 @@ public class UserInfoController {
                     required = false
             )
     })
-    @GetMapping("/face/manage/query/{grade}/{username}/{date}")
-    public JsonResult<UserInfo> findUserInfoCondition(@PathVariable String grade,
-                                                      @PathVariable String username,
-                                                      @PathVariable String date){
+    @GetMapping("/face/manage/query/")
+    public JsonResult<UserInfo> findUserInfoCondition(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
+                                                      @RequestParam(name = "username",required = false,defaultValue = "") String username,
+                                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date){
+        JsonResult<UserInfo> jsonResult = new JsonResult<>();
+        if (!StringUtils.hasLength(grade) && !StringUtils.hasLength(username) && date == null){
+
+        }
         return null;
     }
 
