@@ -4,21 +4,21 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
 import zzuli.informationizationcenter.it.facerecognition.domain.JsonResult;
 import zzuli.informationizationcenter.it.facerecognition.domain.UploadStatus;
+import zzuli.informationizationcenter.it.facerecognition.domain.UserAndHistoryInfo;
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
+import zzuli.informationizationcenter.it.facerecognition.service.HistoryInfoService;
 import zzuli.informationizationcenter.it.facerecognition.service.UserInfoService;
 import zzuli.informationizationcenter.it.facerecognition.utils.HttpUtils;
 import zzuli.informationizationcenter.it.facerecognition.utils.UploadUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,11 +36,17 @@ public class UserInfoController {
     private String path;
     private HttpUtils httpUtils;
     private UserInfoService userInfoService;
+    private HistoryInfoService historyInfoService;
+
+    @Autowired
+    public void setHistoryInfoService(HistoryInfoService historyInfoService) {
+        this.historyInfoService = historyInfoService;
+    }
+
     @Autowired
     public void setUserInfoService(UserInfoService userInfoService) {
         this.userInfoService = userInfoService;
     }
-
     @Autowired
     public void setHttpUtils(HttpUtils httpUtils){
         this.httpUtils = httpUtils;
@@ -117,15 +123,21 @@ public class UserInfoController {
                     required = false
             )
     })
-    @GetMapping("/face/manage/query/")
-    public JsonResult<UserInfo> findUserInfoCondition(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
+    @GetMapping("/face/history/query")
+    public JsonResult<UserAndHistoryInfo> findUserInfoCondition(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
                                                       @RequestParam(name = "username",required = false,defaultValue = "") String username,
                                                       @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date){
-        JsonResult<UserInfo> jsonResult = new JsonResult<>();
-        if (!StringUtils.hasLength(grade) && !StringUtils.hasLength(username) && date == null){
-
+        JsonResult<UserAndHistoryInfo> jsonResult = new JsonResult<>();
+        List<UserAndHistoryInfo> queryInfo = historyInfoService.findUserAndHistoryInfo(grade, username, date);
+        if (queryInfo == null || queryInfo.size() == 0){
+            jsonResult.setCode(403);
+            jsonResult.setMsg("未查询到相应的内容");
+        }else{
+            jsonResult.setCode(200);
+            jsonResult.setMsg("共查询到"+queryInfo.size()+"条信息");
+            jsonResult.setData(queryInfo);
         }
-        return null;
+        return jsonResult;
     }
 
     @GetMapping("/face/manage/query/{username}")
