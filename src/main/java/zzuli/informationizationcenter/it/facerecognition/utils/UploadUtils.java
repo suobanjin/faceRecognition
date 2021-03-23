@@ -1,8 +1,13 @@
 package zzuli.informationizationcenter.it.facerecognition.utils;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 import zzuli.informationizationcenter.it.facerecognition.domain.UploadStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +25,6 @@ public class UploadUtils {
      * @return map 返回值有多个，key为url表示上传的图片url，key为path表示图片在服务器的真实路径
      */
     public static Map<String,String> upload(MultipartFile file, String path, HttpServletRequest request) {
-        System.out.println(file);
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null) return null;
         int index = originalFilename.indexOf(".");
@@ -31,11 +35,16 @@ public class UploadUtils {
         String childrenDir = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         File localFile = new File(path,childrenDir);
         localFile.mkdir();
+        try {
+            IoUtil.copy(file.getInputStream(),new FileOutputStream(localFile + File.separator + finalFileName));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         String url = request.getScheme() +"://" + request.getServerName() +":" +request.getServerPort() +"/";
         Map<String,String> map = new HashMap<>();
         String finalUrl = url + childrenDir + "/" + finalFileName;
         map.put(UploadStatus.URL, finalUrl);
-        map.put(UploadStatus.PATH, localFile + "");
+        map.put(UploadStatus.PATH, localFile + "\\"+ finalFileName);
         return map;
     }
 }

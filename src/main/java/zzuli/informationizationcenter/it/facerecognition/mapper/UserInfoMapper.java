@@ -7,7 +7,7 @@ import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
 
 /**
  * @ClassName UserInfoMapper
- * @Description TODO
+ * @Description UserInfoMapper
  * @Author wu2we
  * @Date 2021/3/22 20:41
  * @Version 1.0
@@ -15,7 +15,13 @@ import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
 @Mapper
 @Repository
 public interface UserInfoMapper {
+    /**
+     * @Date: 2021/3/23 10:32
+     * @Author 索半斤
+     * @Description: 向数据库中插入录入的用户信息
+     * @MethodName: insert
+     */
     @Insert("insert into user(username,gender,college,grade,date,feature,image_url) values(" +
-            "#{username},#{gender},#{date},#{feature},#{imageUrl})")
+            "#{username},#{gender},#{college},#{grade},#{date},#{feature},#{imageUrl})")
     int insert(UserInfo userInfo);
 }

@@ -46,6 +46,7 @@ public class HttpUtils {
      * @param imagePath 表示某张图片的路径，并且该路径应为绝对路径
      */
     public  String post(String imagePath){
+        System.out.println(imagePath);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString;
