@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
 import zzuli.informationizationcenter.it.facerecognition.domain.*;
 import zzuli.informationizationcenter.it.facerecognition.service.HistoryInfoService;
 import zzuli.informationizationcenter.it.facerecognition.service.UserInfoService;
