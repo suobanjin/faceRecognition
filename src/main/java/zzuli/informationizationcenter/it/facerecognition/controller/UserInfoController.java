@@ -8,10 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import zzuli.informationizationcenter.it.facerecognition.domain.JsonResult;
-import zzuli.informationizationcenter.it.facerecognition.domain.UploadStatus;
-import zzuli.informationizationcenter.it.facerecognition.domain.UserAndHistoryInfo;
-import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
+import springfox.documentation.spring.web.json.Json;
+import zzuli.informationizationcenter.it.facerecognition.domain.*;
 import zzuli.informationizationcenter.it.facerecognition.service.HistoryInfoService;
 import zzuli.informationizationcenter.it.facerecognition.service.UserInfoService;
 import zzuli.informationizationcenter.it.facerecognition.utils.HttpUtils;
@@ -103,7 +101,7 @@ public class UserInfoController {
     }
 
 
-    @ApiOperation(value = "人脸信息管理",
+    @ApiOperation(value = "分页查询人脸历史识别信息",
                   response = JsonResult.class
     )
     @ApiImplicitParams({
@@ -124,31 +122,55 @@ public class UserInfoController {
             )
     })
     @GetMapping("/face/history/query")
-    public JsonResult<UserAndHistoryInfo> findUserInfoCondition(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
+    public JsonResult<PageBean<UserAndHistoryInfo>> findUserInfoCondition(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
                                                       @RequestParam(name = "username",required = false,defaultValue = "") String username,
-                                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date){
-        JsonResult<UserAndHistoryInfo> jsonResult = new JsonResult<>();
-        List<UserAndHistoryInfo> queryInfo = historyInfoService.findUserAndHistoryInfo(grade, username, date);
-        if (queryInfo == null || queryInfo.size() == 0){
+                                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date,
+                                                                int pageNum,
+                                                                int pageSize){
+        JsonResult<PageBean<UserAndHistoryInfo>> jsonResult = new JsonResult<>();
+        PageBean<UserAndHistoryInfo> queryInfo = historyInfoService.findUserAndHistoryInfo(pageNum,pageSize,grade, username, date);
+        if (queryInfo == null || queryInfo.getTotalPage() == 0){
             jsonResult.setCode(403);
             jsonResult.setMsg("未查询到相应的内容");
         }else{
             jsonResult.setCode(200);
-            jsonResult.setMsg("共查询到"+queryInfo.size()+"条信息");
-            jsonResult.setData(queryInfo);
+            jsonResult.setMsg("共查询到"+queryInfo.getTotalPage()+"条信息");
+            jsonResult.setPage(queryInfo);
         }
         return jsonResult;
     }
 
-    @GetMapping("/face/manage/query/{username}")
-    @ApiOperation("根据姓名查找第三个页面的信息")
-    @ApiImplicitParam(
-            name = "username",
-            value = "用户名",
-            required = false
-    )
-    public JsonResult<UserInfo> queryUserInfo(@PathVariable String username){
-        return null;
+    @GetMapping("/face/manage/query")
+    @ApiOperation("用户基本信息管理")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "grade",
+                    value = "学院班级",
+                    required = false
+            ),
+            @ApiImplicitParam(
+                    name = "username",
+                    value = "用户名",
+                    required = false
+            ),
+            @ApiImplicitParam(
+                    name = "date",
+                    value = "人脸录入日期",
+                    required = false
+            )
+    })
+    public JsonResult<UserInfo> queryUserInfo(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
+                                              @RequestParam(name = "username",required = false,defaultValue = "") String username,
+                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date){
+        if (grade.equals("") && username.equals("")){
+            grade = null;
+            username = null;
+        }
+        JsonResult<UserInfo> jsonResult = new JsonResult<>();
+        List<UserInfo> userInfos = userInfoService.findUserInfos(0, 99999, grade, username, date);
+        jsonResult.setData(userInfos);
+        jsonResult.setCode(200);
+        return jsonResult;
     }
 
 

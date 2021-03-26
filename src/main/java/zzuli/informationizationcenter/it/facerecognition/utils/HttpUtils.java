@@ -53,7 +53,7 @@ public class HttpUtils {
         try {
             String tempImageName = IMAGE_PREFIX + "temp" + RandomUtil.randomString(6) + ".jpg";
             Img.from(FileUtil.file(imagePath))
-                    .setQuality(1)//压缩比率
+                    .setQuality(7)//压缩比率
                     .write(FileUtil.file(tempImageName));
             // 创建Http Post请求
             HttpPost httpPost = new HttpPost(POST_URL);

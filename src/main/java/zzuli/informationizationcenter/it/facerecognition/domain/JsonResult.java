@@ -15,6 +15,27 @@ public class JsonResult<T> implements Serializable {
     private List<T> data;
     @ApiModelProperty(value = "数据数量")
     private int count;
+    @ApiModelProperty(value = "分页数据pageBean")
+    private T page;
+
+    @Override
+    public String toString() {
+        return "JsonResult{" +
+                "msg='" + msg + '\'' +
+                ", code=" + code +
+                ", data=" + data +
+                ", count=" + count +
+                ", page=" + page +
+                '}';
+    }
+
+    public T getPage() {
+        return page;
+    }
+
+    public void setPage(T page) {
+        this.page = page;
+    }
 
     public String getMsg() {
         return msg;
@@ -75,14 +96,5 @@ public class JsonResult<T> implements Serializable {
     public void fail(String message){
         setCode(2);
         setMsg(message);
-    }
-    @Override
-    public String toString() {
-        return "JsonResult{" +
-                "msg='" + msg + '\'' +
-                ", code=" + code +
-                ", data=" + data +
-                ", count=" + count +
-                '}';
     }
 }

@@ -2,9 +2,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     #url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=UTF-8
-    url: jdbc:mysql://175.24.98.81:3306/face?useUnicode=true&characterEncoding=UTF-8
+    #url: jdbc:mysql://175.24.98.81:3306/face?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://address=(protocol=tcp)(host=2001:da8:270:2020:f816:3eff:fe78:6cb2)(port=3389)/face?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 8778218jia
+    #password: 8778218jia
+    password: IC-Studio1
     driver-class-name: com.mysql.jdbc.Driver
     initialSize: 5
     minIdle: 5
@@ -40,8 +42,22 @@ pagehelper:
   reasonable: false
   support-methods-arguments: false
   helper-dialect: mysql
-featureRequestUrl: http://175.24.98.81:5000/face/feature   #人脸识别算法请求url地址
+featureRequestUrl: http://[2001:da8:270:2020:f816:3eff:fe78:6cb2]:5080/face/feature   #人脸识别算法请求url地址
 tempImagePrefix: C:\image\temp\      #临时图片存放地址前缀
 baseFilePrefix: C:\image
 server:
   port: 8081
+#mybatis
+mybatis:
+  type-aliases-package: zzuli.informationizationcenter.it.facerecognition.domain
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+    zzuli:
+      informationizationcenter:
+        it:
+          facerecognition:
+            mapper: debug

@@ -22,7 +22,7 @@ public class HistoryInfoMapperTest {
     private HistoryInfoMapper historyInfoMapper;
     @Test
     public void test01(){
-        List<UserAndHistoryInfo> historyInfo =  historyInfoMapper.findHistoryInfo("", "", null);
+        List<UserAndHistoryInfo> historyInfo =  historyInfoMapper.findHistoryInfo(0,1,"", "", null);
         List<UserAndHistoryInfo> collect = historyInfo.stream().distinct().collect(Collectors.toList());
         for (UserAndHistoryInfo userAndHistoryInfo : collect) {
             System.out.println(userAndHistoryInfo);
@@ -32,5 +32,10 @@ public class HistoryInfoMapperTest {
     public void test02(){
         HistoryInfo oneHistoryInfoById = historyInfoMapper.findOneHistoryInfoById(2);
         System.out.println(oneHistoryInfoById);
+    }
+
+    @Test
+    public void test03(){
+        //historyInfoMapper.findHistoryInfo()
     }
 }

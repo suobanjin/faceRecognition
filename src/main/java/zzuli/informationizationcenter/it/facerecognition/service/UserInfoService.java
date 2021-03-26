@@ -2,6 +2,9 @@ package zzuli.informationizationcenter.it.facerecognition.service;
 
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @ClassName UserInfoService
  * @Description TODO
@@ -11,4 +14,5 @@ import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
  */
 public interface UserInfoService {
     boolean insert(UserInfo userInfo);
+    List<UserInfo> findUserInfos(int pageNum,int pageSize,String grade, String username, Date date);
 }

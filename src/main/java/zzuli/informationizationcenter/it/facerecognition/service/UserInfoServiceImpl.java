@@ -6,6 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
 import zzuli.informationizationcenter.it.facerecognition.mapper.UserInfoMapper;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @ClassName UserInfoServiceImpl
  * @Description TODO
@@ -26,5 +29,10 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Transactional(rollbackFor = Exception.class)
     public boolean insert(UserInfo userInfo) {
         return userInfoMapper.insert(userInfo) >= 1;
+    }
+
+    @Override
+    public List<UserInfo> findUserInfos(int pageNum, int pageSize, String grade, String username, Date date) {
+        return userInfoMapper.findUserByCondition(pageNum, pageSize, grade, username, date);
     }
 }

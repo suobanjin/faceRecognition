@@ -14,6 +14,7 @@ public class HistoryInfo implements Serializable {
     private int historyId;      //主键id，自增
     private Date historyDate;   //用户出入时间
     private int type;    // 用户出入类型
+    private int userId;  //外键，用户id
 
     @Override
     public String toString() {

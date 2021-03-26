@@ -39,9 +39,6 @@ public interface HistoryInfoMapper {
     @SelectProvider(value = SelectUserInfoProvider.class,method = "selectUserInfo")
     @Results({
             @Result(id = true, property = "id", column = "id"),
-           /* @Result(id = true, property = "historyId", column = "history_id"),
-            @Result(property = "historyDate",column = "history_date"),
-            @Result(property = "type",column = "type"),*/
             @Result(property = "username",column = "username"),
             @Result(property = "gender",column = "gender"),
             @Result(property = "college",column = "college"),
@@ -51,5 +48,8 @@ public interface HistoryInfoMapper {
             @Result(property = "historyInfos",column = "id",
             many = @Many(select = "zzuli.informationizationcenter.it.facerecognition.mapper.HistoryInfoMapper.findManyHistoryInfoById"))
     })
-    List<UserAndHistoryInfo> findHistoryInfo(String grade, String username, Date date);
+    List<UserAndHistoryInfo> findHistoryInfo(int pageNum,int pageSize,String grade, String username, Date date);
+
+    @SelectProvider(value = SelectUserInfoProvider.class,method = "selectCountUserInfo")
+    Integer findUserInfoCount(int pageNum,int pageSize,String grade, String username, Date date);
 }

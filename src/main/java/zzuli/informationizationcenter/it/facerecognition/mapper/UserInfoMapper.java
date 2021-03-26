@@ -1,10 +1,11 @@
 package zzuli.informationizationcenter.it.facerecognition.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import zzuli.informationizationcenter.it.facerecognition.domain.UserInfo;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName UserInfoMapper
@@ -25,4 +26,16 @@ public interface UserInfoMapper {
     @Insert("insert into user(username,gender,college,grade,date,feature,image_url) values(" +
             "#{username},#{gender},#{college},#{grade},#{date},#{feature},#{imageUrl})")
     int insert(UserInfo userInfo);
+
+    @SelectProvider(value = SelectUserInfoProvider.class,method = "selectUserInfo")
+    @Results({
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "username",column = "username"),
+            @Result(property = "gender",column = "gender"),
+            @Result(property = "college",column = "college"),
+            @Result(property = "date",column = "date"),
+            @Result(property = "feature",column = "feature"),
+            @Result(property = "imageUrl",column = "image_url")
+    })
+    List<UserInfo> findUserByCondition(int pageNum, int pageSize, String grade, String username, Date date);
 }
