@@ -128,6 +128,12 @@ public class UserInfoController {
                                                                 int pageNum,
                                                                 int pageSize){
         JsonResult<PageBean<UserAndHistoryInfo>> jsonResult = new JsonResult<>();
+        if (grade.equals("")){
+            grade = null;
+        }
+        if (username.equals("")){
+            username = null;
+        }
         PageBean<UserAndHistoryInfo> queryInfo = historyInfoService.findUserAndHistoryInfo(pageNum,pageSize,grade, username, date);
         if (queryInfo == null || queryInfo.getTotalPage() == 0){
             jsonResult.setCode(403);
@@ -162,8 +168,10 @@ public class UserInfoController {
     public JsonResult<UserInfo> queryUserInfo(@RequestParam(name = "grade",required = false,defaultValue = "") String grade,
                                               @RequestParam(name = "username",required = false,defaultValue = "") String username,
                                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")@RequestParam(name = "date",required = false) Date date){
-        if (grade.equals("") && username.equals("")){
+        if (grade.equals("")){
             grade = null;
+        }
+        if (username.equals("")){
             username = null;
         }
         JsonResult<UserInfo> jsonResult = new JsonResult<>();
